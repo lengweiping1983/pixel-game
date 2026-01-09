@@ -13,6 +13,7 @@ const Game = () => {
     const [userId, setUserId] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [startTime, setStartTime] = useState(Date.now());
+    const [userAnswers, setUserAnswers] = useState([]);
 
     useEffect(() => {
         const id = localStorage.getItem('pixel_game_user_id');
@@ -42,22 +43,32 @@ const Game = () => {
         const currentQ = questions[currentIndex];
         const isCorrect = optionKey === currentQ.answer;
 
+        // Record Answer
+        const answerRecord = {
+            questionId: currentQ.id,
+            questionText: currentQ.question,
+            userChoice: optionKey,
+            correctAnswer: currentQ.answer,
+            options: currentQ.options,
+            isCorrect
+        };
+
+        const newAnswers = [...userAnswers, answerRecord];
+        setUserAnswers(newAnswers);
+
         // Optimistic score update
         const newScore = isCorrect ? score + 1 : score;
         setScore(newScore);
-
-        // Using basic alert for feedback for now, or just move on styling later
-        // For flow, let's just move next immediately
 
         if (currentIndex < questions.length - 1) {
             setCurrentIndex(currentIndex + 1);
         } else {
             // Game Over
-            finishGame(newScore);
+            finishGame(newScore, newAnswers);
         }
     };
 
-    const finishGame = async (finalScore) => {
+    const finishGame = async (finalScore, finalAnswers) => {
         setSubmitting(true);
         const endTime = Date.now();
         const duration = Math.floor((endTime - startTime) / 1000); // seconds
@@ -68,7 +79,8 @@ const Game = () => {
             score: finalScore,
             totalQuestions: questions.length,
             passed,
-            duration
+            duration,
+            answers: finalAnswers
         };
 
         try {
@@ -77,7 +89,7 @@ const Game = () => {
             navigate('/result', { state: resultData });
         } catch (error) {
             console.error("Failed to submit", error);
-            // Navigate anyway?
+            // Navigate anyway
             navigate('/result', { state: { ...resultData, error: true } });
         }
     };
