@@ -1,9 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getQuestions } from '../services/api';
+
+const QUESTION_COUNT = parseInt(import.meta.env.VITE_QUESTION_COUNT || '5', 10);
 
 const Home = () => {
     const [id, setId] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Prefetch questions to speed up "Loading..." phase
+        getQuestions(QUESTION_COUNT).then(data => {
+            sessionStorage.setItem('pixel_game_questions_cache', JSON.stringify(data));
+        }).catch(err => console.error("Prefetch failed", err));
+    }, []);
 
     const handleStart = () => {
         if (id.trim()) {

@@ -25,9 +25,17 @@ const Game = () => {
 
         const initGame = async () => {
             try {
-                const data = await getQuestions(QUESTION_COUNT);
-                setQuestions(data);
-                setStartTime(Date.now());
+                // Check cache first
+                const cached = sessionStorage.getItem('pixel_game_questions_cache');
+                if (cached) {
+                    setQuestions(JSON.parse(cached));
+                    sessionStorage.removeItem('pixel_game_questions_cache'); // Clear after use
+                    setStartTime(Date.now());
+                } else {
+                    const data = await getQuestions(QUESTION_COUNT);
+                    setQuestions(data);
+                    setStartTime(Date.now());
+                }
             } catch (error) {
                 console.error("Failed to load questions", error);
                 alert("Failed to load questions. Please check network.");
@@ -50,10 +58,12 @@ const Game = () => {
             userChoice: optionKey,
             correctAnswer: currentQ.answer,
             options: currentQ.options,
+            // eslint-disable-next-line no-unused-vars
             isCorrect
         };
 
         const newAnswers = [...userAnswers, answerRecord];
+        newAnswers[userAnswers.length].isCorrect = isCorrect; // Ensure isCorrect is set (index fix)
         setUserAnswers(newAnswers);
 
         // Optimistic score update
@@ -69,7 +79,7 @@ const Game = () => {
     };
 
     const finishGame = async (finalScore, finalAnswers) => {
-        setSubmitting(true);
+        // No "Submitting" state to block UI
         const endTime = Date.now();
         const duration = Math.floor((endTime - startTime) / 1000); // seconds
         const passed = finalScore >= parseInt(import.meta.env.VITE_PASS_THRESHOLD || '3', 10);
@@ -83,19 +93,13 @@ const Game = () => {
             answers: finalAnswers
         };
 
-        try {
-            await submitResult(resultData);
-            // Pass result to result page
-            navigate('/result', { state: resultData });
-        } catch (error) {
-            console.error("Failed to submit", error);
-            // Navigate anyway
-            navigate('/result', { state: { ...resultData, error: true } });
-        }
+        // Fire and forget submission by passing responsibility to Result page or just triggering it here without await
+        // To be safe against unmounts, we pass a flag to Result page to handle submission
+        navigate('/result', { state: { ...resultData, needSubmit: true } });
     };
 
     if (loading) return <div className="container">LOADING...</div>;
-    if (submitting) return <div className="container">SAVING SCORE...</div>;
+    // Removed submitting check
     if (questions.length === 0) return <div className="container">NO QUESTIONS FOUND</div>;
 
     const currentQ = questions[currentIndex];

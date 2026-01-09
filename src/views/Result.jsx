@@ -1,8 +1,17 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { submitResult } from '../services/api';
 
 const Result = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (state && state.needSubmit) {
+            // Background submit
+            submitResult(state).catch(err => console.error("Background submit failed", err));
+        }
+    }, [state]);
 
     // Fallback if accessed directly
     if (!state) {
