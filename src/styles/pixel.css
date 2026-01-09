@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  --pixel-bg: #2f2f2f;
+  --pixel-text: #ffffff;
+  --pixel-primary: #ff004d; /* Redish */
+  --pixel-secondary: #00e436; /* Greenish */
+  --pixel-accent: #29adff; /* Blueish */
+  --pixel-yellow: #ffec27;
+  --pixel-border: 4px;
+  --font-pixel: 'Press Start 2P', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-pixel);
+  background-color: var(--pixel-bg);
+  color: var(--pixel-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: none;
+}
+
+/* Pixel Art Border Utility */
+.pixel-box {
+  background: #fff;
+  color: #000;
+  border: var(--pixel-border) solid #000;
+  position: relative;
+  padding: 1rem;
+  box-shadow: 
+    calc(var(--pixel-border) * -1) 0 0 0 #000,
+    var(--pixel-border) 0 0 0 #000,
+    0 calc(var(--pixel-border) * -1) 0 0 #000,
+    0 var(--pixel-border) 0 0 #000;
+  margin: calc(var(--pixel-border) * 2);
+}
+
+.pixel-box.dark {
+  background: #000;
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 
+    calc(var(--pixel-border) * -1) 0 0 0 #fff,
+    var(--pixel-border) 0 0 0 #fff,
+    0 calc(var(--pixel-border) * -1) 0 0 #fff,
+    0 var(--pixel-border) 0 0 #fff;
+}
+
+/* Pixel Button */
+.pixel-btn {
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+  background: var(--pixel-accent);
+  color: #fff;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: inset -4px -4px 0px 0px rgba(0,0,0,0.5);
+  transition: transform 0.1s;
+  text-transform: uppercase;
+}
+
+.pixel-btn:active {
+  transform: translateY(4px);
+  box-shadow: inset -2px -2px 0px 0px rgba(0,0,0,0.5);
+}
+
+.pixel-btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pixel-btn.primary {
+  background: var(--pixel-primary);
+}
+
+.pixel-btn.secondary {
+  background: var(--pixel-secondary);
+  color: #000;
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+input.pixel-input {
+  font-family: var(--font-pixel);
+  font-size: 1.2rem;
+  padding: 10px;
+  border: 4px solid #000;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  outline: none;
+  background: #fff;
+}
+
+input.pixel-input:focus {
+  background: #ffec27;
+}
