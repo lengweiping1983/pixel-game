@@ -1,0 +1,11 @@
+ID,Question,OptionA,OptionB,OptionC,OptionD,Answer
+1,AI 是什么的缩写？,Artificial Intelligence,Auto Internet,Advanced Interface,Automated Intelligence,A
+2,哪项测试用于判断机器是否具有人类智能？,IQ Test,Turing Test,Speed Test,Memory Test,B
+3,ChatGPT 是由哪家公司开发的？,Google,Meta,OpenAI,Microsoft,C
+4,GPT 中的 "P" 代表什么？,Processing,Pre-trained,Programming,Protocol,B
+5,神经网络是模仿什么结构设计的？,计算机芯片,人脑神经元,树根系统,城市电网,B
+6,AI 模型生成虚假或错误信息的现象被称为什么？,Dreaming,Hallucination,Lying,Bugging,B
+7,以下哪个是著名的 "文生图" (Text-to-Image) 模型？,BERT,Midjourney,AlphaGo,Word2Vec,B
+8,深度学习 (Deep Learning) 是哪个领域的子集？,大数据,区块链,机器学习,云计算,C
+9,训练大型 AI 模型通常主要依赖哪种硬件？,CPU,GPU,SSD,RAM,B
+10,AlphaGo 在哪种棋类游戏中击败了人类世界冠军？,国际象棋,围棋,跳棋,五子棋,B
